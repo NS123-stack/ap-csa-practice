@@ -1,1739 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>AP Computer Science A Practice Quiz</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
+<meta charset="UTF-8">
+<title>AP CS Arena – AP CSA Practice</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
     :root {
-      --bg: #050816;
-      --bg-alt: #0b1020;
-      --accent: #4f46e5;
-      --accent-soft: rgba(79, 70, 229, 0.15);
-      --accent-strong: #a855f7;
-      --text: #f9fafb;
-      --muted: #9ca3af;
-      --danger: #f97373;
-      --success: #22c55e;
-      --card: #111827;
-      --border: #1f2937;
-      --radius-lg: 18px;
-      --radius-md: 12px;
-      --radius-pill: 999px;
-      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
-      --shadow-glow: 0 0 40px rgba(79, 70, 229, 0.45);
-      --transition-fast: 0.18s ease-out;
-      --transition-med: 0.25s ease-out;
+        --bg: #0f172a;
+        --text: #e5e7eb;
+        --card: #111827;
+        --accent: #f59e0b;
+        --border: #1f2933;
+        --muted: #9ca3af;
+        --code-bg: #020617;
+        --choice-bg: #020617;
+    }
+
+    body.light {
+        --bg: #f3f4f6;
+        --text: #111827;
+        --card: #ffffff;
+        --accent: #f59e0b;
+        --border: #d1d5db;
+        --muted: #6b7280;
+        --code-bg: #f9fafb;
+        --choice-bg: #f3f4f6;
     }
 
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+        box-sizing: border-box;
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 16px;
-    }
-
-    .app-shell {
-      width: 100%;
-      max-width: 1100px;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
-      border-radius: 28px;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      box-shadow: var(--shadow-soft);
-      padding: 26px 26px 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .app-shell::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(79, 70, 229, 0.18), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(236, 72, 153, 0.16), transparent 55%),
-        radial-gradient(circle at 50% 100%, rgba(56, 189, 248, 0.12), transparent 55%);
-      opacity: 0.9;
-      z-index: -1;
-      filter: blur(2px);
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top, #1f2937 0, var(--bg) 45%);
+        color: var(--text);
+        transition: background 0.3s ease, color 0.3s ease;
     }
 
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 20px;
+        padding: 18px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(to right, #020617aa, #020617dd);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 20;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
     }
 
-    .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 16px;
-      background: radial-gradient(circle at 30% 0%, #e5e7eb, #4f46e5 45%, #0f172a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow-glow);
-      position: relative;
-      overflow: hidden;
+    .brand-title {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
     }
 
-    .brand-logo::after {
-      content: "";
-      position: absolute;
-      inset: 2px;
-      border-radius: 14px;
-      border: 1px solid rgba(15, 23, 42, 0.6);
-      background: radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.18), transparent 55%);
-      mix-blend-mode: screen;
+    .brand-subtitle {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
     }
 
-    .brand-logo span {
-      position: relative;
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: 0.04em;
-      color: #e5e7eb;
-      text-shadow: 0 0 12px rgba(15, 23, 42, 0.8);
+    #controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
     }
 
-    .brand-text h1 {
-      font-size: 22px;
-      letter-spacing: 0.03em;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-
-    .brand-text h1 span {
-      background: linear-gradient(120deg, #e5e7eb, #c4b5fd, #a855f7);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .brand-text h1 small {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    .brand-text p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .header-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 6px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .pill-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .pill {
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18), transparent 60%);
-      backdrop-filter: blur(10px);
-    }
-
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
-    }
-
-    .pill-label {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 10px;
-      color: #e5e7eb;
-      font-weight: 600;
-    }
-
-    .pill-value {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
-      gap: 18px;
-    }
-
-    @media (max-width: 880px) {
-      .layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .header-right {
-        align-items: flex-start;
-      }
-      .pill-row {
-        justify-content: flex-start;
-      }
-    }
-
-    .card {
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
-      border-radius: 22px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      padding: 18px 18px 16px;
-      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.75);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 0 0, rgba(79, 70, 229, 0.12), transparent 55%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .card-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #e5e7eb;
-    }
-
-    .card-subtitle {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .topic-select-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    label {
-      font-size: 12px;
-      color: var(--muted);
+    select, button {
+        padding: 9px 14px;
+        font-size: 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        cursor: pointer;
+        transition: 0.2s;
     }
 
     select {
-      background: radial-gradient(circle at top, #020617, #020617);
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      color: #e5e7eb;
-      padding: 7px 12px;
-      font-size: 13px;
-      outline: none;
-      min-width: 220px;
-      appearance: none;
-      position: relative;
-      background-image: linear-gradient(45deg, transparent 50%, #9ca3af 50%),
-        linear-gradient(135deg, #9ca3af 50%, transparent 50%);
-      background-position: calc(100% - 14px) 11px, calc(100% - 9px) 11px;
-      background-size: 6px 6px, 6px 6px;
-      background-repeat: no-repeat;
-      cursor: pointer;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
-        transform var(--transition-fast), background-color var(--transition-fast);
+        min-width: 170px;
     }
 
-    select:hover {
-      border-color: var(--accent-strong);
-      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.7);
-      transform: translateY(-0.5px);
+    button {
+        background: var(--accent);
+        color: #111827;
+        border: none;
+        font-weight: 600;
     }
 
-    select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.9);
+    button:hover, select:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
     }
 
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--muted);
+    main {
+        max-width: 1100px;
+        margin: 32px auto 40px;
+        padding: 0 16px;
     }
 
-    .chip {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      padding: 3px 8px;
-      background: rgba(15, 23, 42, 0.9);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+    .hero {
+        margin-bottom: 24px;
     }
 
-    .chip-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #38bdf8;
+    .hero-title {
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 6px;
     }
 
-    .question-box {
-      margin-top: 10px;
-      padding: 14px 14px 12px;
-      border-radius: 16px;
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.9);
+    .hero-text {
+        font-size: 14px;
+        color: var(--muted);
+        max-width: 600px;
     }
 
-    .question-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      font-size: 11px;
-      color: var(--muted);
+    #layout {
+        display: grid;
+        grid-template-columns: minmax(0, 2.5fr) minmax(0, 1fr);
+        gap: 20px;
+        align-items: flex-start;
     }
 
-    .question-topic-pill {
-      border-radius: 999px;
-      padding: 3px 9px;
-      border: 1px solid rgba(129, 140, 248, 0.7);
-      background: radial-gradient(circle at 0 0, rgba(129, 140, 248, 0.3), transparent 60%);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #e5e7eb;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    #questionCard {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 22px 20px 24px;
+        border: 1px solid var(--border);
+        box-shadow: 0 18px 40px #00000040;
     }
 
-    .question-topic-pill span {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #a855f7;
-      box-shadow: 0 0 10px rgba(168, 85, 247, 0.9);
+    #questionMeta {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 6px;
     }
 
-    .question-counter {
-      font-size: 11px;
-      color: var(--muted);
+    #questionText {
+        font-size: 20px;
+        margin-bottom: 16px;
+        font-weight: 600;
     }
 
-    .question-text {
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 10px;
+    pre {
+        background: var(--code-bg);
+        padding: 14px;
+        border-radius: 10px;
+        overflow-x: auto;
+        font-size: 14px;
+        margin-bottom: 16px;
+        white-space: pre;
+        border: 1px solid #02061780;
     }
 
-    .code-block {
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-        Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      background: #020617;
-      border-radius: 10px;
-      padding: 8px 10px;
-      border: 1px solid rgba(30, 64, 175, 0.7);
-      margin-bottom: 10px;
-      overflow-x: auto;
-      white-space: pre;
+    #choices {
+        margin-top: 6px;
     }
 
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 10px;
+    .choice {
+        padding: 11px 12px;
+        margin: 7px 0;
+        background: var(--choice-bg);
+        border-radius: 10px;
+        cursor: pointer;
+        border: 1px solid #02061780;
+        transition: 0.18s;
+        font-size: 14px;
     }
 
-    .option {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      padding: 7px 11px;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      background: radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
-      transition: background var(--transition-med), border-color var(--transition-med),
-        transform var(--transition-fast), box-shadow var(--transition-fast);
-      position: relative;
-      overflow: hidden;
+    .choice:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px);
     }
 
-    .option::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 0 0, rgba(79, 70, 229, 0.18), transparent 60%);
-      opacity: 0;
-      transition: opacity var(--transition-med);
-      pointer-events: none;
+    .correct {
+        background: #16a34a !important;
+        color: #f9fafb;
+        border-color: #16a34a !important;
     }
 
-    .option:hover {
-      border-color: var(--accent-strong);
-      transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.9);
+    .incorrect {
+        background: #dc2626 !important;
+        color: #f9fafb;
+        border-color: #dc2626 !important;
     }
 
-    .option:hover::before {
-      opacity: 1;
+    #status {
+        margin-top: 12px;
+        font-size: 13px;
+        color: var(--muted);
     }
 
-    .option-label {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: var(--muted);
-      background: rgba(15, 23, 42, 0.9);
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 
-    .option-text {
-      flex: 1;
+    .panel {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 16px 16px 18px;
+        border: 1px solid var(--border);
     }
 
-    .option.correct {
-      border-color: var(--success);
-      background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.18), rgba(15, 23, 42, 0.98));
+    .panel-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 8px;
     }
 
-    .option.incorrect {
-      border-color: var(--danger);
-      background: radial-gradient(circle at 0 0, rgba(248, 113, 113, 0.18), rgba(15, 23, 42, 0.98));
-    }
-
-    .option.disabled {
-      pointer-events: none;
-      opacity: 0.9;
-    }
-
-    .option.correct .option-label {
-      border-color: var(--success);
-      color: var(--success);
-    }
-
-    .option.incorrect .option-label {
-      border-color: var(--danger);
-      color: var(--danger);
-    }
-
-    .feedback {
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-
-    .feedback.correct {
-      color: var(--success);
-    }
-
-    .feedback.incorrect {
-      color: var(--danger);
-    }
-
-    .explanation {
-      font-size: 12px;
-      color: var(--muted);
-      border-radius: 12px;
-      border: 1px dashed rgba(148, 163, 184, 0.5);
-      padding: 8px 10px;
-      background: rgba(15, 23, 42, 0.9);
-      margin-bottom: 8px;
-    }
-
-    .question-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: none;
-      padding: 7px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background var(--transition-med), transform var(--transition-fast),
-        box-shadow var(--transition-fast), opacity var(--transition-fast);
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(120deg, #4f46e5, #6366f1, #a855f7);
-      color: #f9fafb;
-      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.7);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 40px rgba(79, 70, 229, 0.9);
-    }
-
-    .btn-ghost {
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--muted);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(15, 23, 42, 1);
-      color: #e5e7eb;
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.9);
-    }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: default;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .stats-card {
-      background: radial-gradient(circle at top right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
-      border-radius: 22px;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      padding: 16px 16px 14px;
-      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.85);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stats-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 100% 0, rgba(236, 72, 153, 0.18), transparent 60%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .stats-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .stats-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .stats-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #e5e7eb;
-    }
-
-    .stats-tag {
-      font-size: 11px;
-      color: var(--muted);
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      padding: 3px 8px;
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .stat {
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      padding: 8px 9px;
-      background: rgba(15, 23, 42, 0.95);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        margin: 4px 0;
     }
 
     .stat-label {
-      font-size: 11px;
-      color: var(--muted);
+        color: var(--muted);
     }
 
     .stat-value {
-      font-size: 16px;
-      font-weight: 600;
+        font-weight: 600;
     }
 
-    .stat-value.accent {
-      background: linear-gradient(120deg, #a855f7, #6366f1, #22c55e);
-      -webkit-background-clip: text;
-      color: transparent;
+    .hint {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.4;
     }
 
-    .stat-sub {
-      font-size: 11px;
-      color: var(--muted);
+    footer {
+        text-align: center;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 18px 0 26px;
     }
 
-    .progress-bar {
-      width: 100%;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      overflow: hidden;
-      margin-bottom: 8px;
+    @media (max-width: 850px) {
+        #layout {
+            grid-template-columns: minmax(0, 1fr);
+        }
     }
 
-    .progress-fill {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #22c55e, #a855f7, #6366f1);
-      width: 0%;
-      transition: width 0.35s ease-out;
+    @media (max-width: 650px) {
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        #controls {
+            width: 100%;
+        }
+        select, button {
+            flex: 1;
+        }
     }
-
-    .topic-summary {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .topic-summary span {
-      color: #e5e7eb;
-      font-weight: 500;
-    }
-
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    .footer-row a {
-      color: #a855f7;
-      text-decoration: none;
-    }
-
-    .footer-row a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      .app-shell {
-        padding: 20px 16px 18px;
-        border-radius: 22px;
-      }
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .footer-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="app-shell">
-    <header>
-      <div class="brand">
-        <div class="brand-logo">
-          <span>CS</span>
-        </div>
-        <div class="brand-text">
-          <h1>
-            <span>AP CSA</span>
-            <small>Practice Lab</small>
-          </h1>
-          <p>Targeted multiple-choice drills across the full AP Computer Science A curriculum.</p>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="pill-row">
-          <div class="pill">
-            <div class="pill-dot"></div>
-            <div class="pill-label">Mode</div>
-            <div class="pill-value">Topic-based MCQ</div>
-          </div>
-          <div class="pill">
-            <div class="pill-label">Difficulty</div>
-            <div class="pill-value" id="difficultyLabel">Mixed</div>
-          </div>
-        </div>
-        <div>Choose a topic, answer, then review explanations and track your stats.</div>
-      </div>
-    </header>
 
-    <div class="layout">
-      <main class="card">
-        <div class="card-inner">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Question workspace</div>
-              <div class="card-subtitle">Select a topic to pull a random AP-style question.</div>
-            </div>
-            <button class="btn btn-ghost" id="randomTopicBtn" type="button">
-              Surprise me
-            </button>
-          </div>
-
-          <div class="topic-select-row">
-            <div>
-              <label for="topicSelect">Topic</label><br />
-              <select id="topicSelect">
-                <option value="all">All topics (mixed)</option>
-                <option value="Primitive Types">Primitive Types</option>
-                <option value="Using Objects">Using Objects</option>
-                <option value="Boolean Expressions & if Statements">Boolean Expressions & if Statements</option>
-                <option value="Iteration (Loops)">Iteration (Loops)</option>
-                <option value="Writing Classes">Writing Classes</option>
-                <option value="Arrays">Arrays</option>
-                <option value="ArrayList">ArrayList</option>
-                <option value="2D Arrays">2D Arrays</option>
-                <option value="Inheritance">Inheritance</option>
-                <option value="Recursion">Recursion</option>
-              </select>
-            </div>
-            <button class="btn btn-primary" id="newQuestionBtn" type="button">
-              New question
-            </button>
-          </div>
-
-          <div class="chip-row">
-            <div class="chip">
-              <div class="chip-dot"></div>
-              <div>AP CSA-aligned content</div>
-            </div>
-            <div class="chip">
-              <div class="chip-dot" style="background:#22c55e;"></div>
-              <div>Instant feedback & explanations</div>
-            </div>
-            <div class="chip">
-              <div class="chip-dot" style="background:#f97316;"></div>
-              <div>Topic-aware stats</div>
-            </div>
-          </div>
-
-          <div class="question-box" id="questionBox">
-            <div class="question-meta">
-              <div class="question-topic-pill" id="questionTopicPill">
-                <span></span>
-                <span id="questionTopicLabel">No topic selected</span>
-              </div>
-              <div class="question-counter" id="questionCounter">0 answered · 0 correct</div>
-            </div>
-            <div class="question-text" id="questionText">
-              Choose a topic and click “New question” to get started.
-            </div>
-            <pre class="code-block" id="codeBlock" style="display:none;"></pre>
-            <div class="options" id="optionsContainer"></div>
-            <div class="feedback" id="feedback" style="display:none;"></div>
-            <div class="explanation" id="explanation" style="display:none;"></div>
-            <div class="question-actions">
-              <button class="btn btn-ghost" id="showExplanationBtn" type="button" disabled>
-                Show explanation
-              </button>
-              <button class="btn btn-primary" id="nextQuestionBtn" type="button" disabled>
-                Next question
-              </button>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <aside class="stats-card">
-        <div class="stats-inner">
-          <div class="stats-header">
-            <div class="stats-title">Session stats</div>
-            <div class="stats-tag" id="topicSummaryTag">All topics</div>
-          </div>
-
-          <div class="stats-grid">
-            <div class="stat">
-              <div class="stat-label">Questions answered</div>
-              <div class="stat-value" id="statAnswered">0</div>
-              <div class="stat-sub">This session</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Accuracy</div>
-              <div class="stat-value accent" id="statAccuracy">0%</div>
-              <div class="stat-sub">Across all topics</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Current streak</div>
-              <div class="stat-value" id="statStreak">0</div>
-              <div class="stat-sub">Correct in a row</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Best streak</div>
-              <div class="stat-value" id="statBestStreak">0</div>
-              <div class="stat-sub">This session</div>
-            </div>
-          </div>
-
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-
-          <div class="topic-summary" id="topicSummary">
-            Topic focus: <span>All topics</span>. Mix questions to simulate the exam, or drill a single area.
-          </div>
-
-          <div class="footer-row">
-            <div>
-              Tip: Try a full mixed run—set topic to “All topics” and answer 20+ in one sitting.
-            </div>
-            <div>
-              Built for AP CSA-style practice. Customize or extend the bank in the script section.
-            </div>
-          </div>
-        </div>
-      </aside>
+<header>
+    <div class="brand">
+        <h1 class="brand-title">AP CS Arena</h1>
+        <p class="brand-subtitle">High‑rigor AP Computer Science A practice in one place.</p>
     </div>
-  </div>
 
-  <script>
+    <div id="controls">
+        <select id="topicSelect">
+            <option value="All">All Topics</option>
+            <option value="Using Objects">Using Objects</option>
+            <option value="Boolean">Boolean Logic</option>
+            <option value="Loops">Loops</option>
+            <option value="Classes">Writing Classes</option>
+            <option value="Arrays">Arrays</option>
+            <option value="ArrayList">ArrayList</option>
+            <option value="2D Arrays">2D Arrays</option>
+            <option value="Inheritance">Inheritance</option>
+            <option value="Recursion">Recursion</option>
+        </select>
+
+        <button id="modeBtn">Light Mode</button>
+        <button id="newQuestionBtn">New Question</button>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <h2 class="hero-title">Targeted AP CSA multiple‑choice practice.</h2>
+        <p class="hero-text">
+            Choose a topic, generate a new question, and drill exam‑style logic, tracing, and debugging.
+            Dark/light mode, topic filtering, and live stats keep practice focused and efficient.
+        </p>
+    </section>
+
+    <section id="layout">
+        <article id="questionCard">
+            <div id="questionMeta"></div>
+            <div id="questionText">Choose a topic and click “New Question”.</div>
+            <pre id="codeBlock"></pre>
+            <div id="choices"></div>
+            <div id="status"></div>
+        </article>
+
+        <aside class="sidebar">
+            <div class="panel">
+                <div class="panel-title">Session Stats</div>
+                <div class="stat-row">
+                    <span class="stat-label">Questions Answered</span>
+                    <span class="stat-value" id="statTotal">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Correct</span>
+                    <span class="stat-value" id="statCorrect">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Accuracy</span>
+                    <span class="stat-value" id="statAccuracy">0%</span>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">How to use this</div>
+                <p class="hint">
+                    1. Pick a topic from the dropdown.<br>
+                    2. Click <strong>New Question</strong> to load a random item from that topic.<br>
+                    3. Click an answer choice to check yourself.<br>
+                    4. Watch your stats update as you practice.
+                </p>
+            </div>
+        </aside>
+    </section>
+</main>
+
+<footer>
+    AP CS Arena · Built for serious AP Computer Science A practice.
+</footer>
+
+<script>
+    // ----------------------------------------------------
+    // QUESTION BANK
+    // ----------------------------------------------------
+    // SAMPLE QUESTIONS so you can SEE everything working.
+    // Replace this entire array with your full bank later.
     const questions = [
-      // Primitive Types
-      {
-        topic: "Primitive Types",
-        difficulty: "Easy",
-        question: "Which of the following is the correct declaration and initialization of an int variable in Java?",
-        code: "",
-        choices: [
-          "int x = 3.14;",
-          "int x = \"10\";",
-          "int x = 10;",
-          "int = 10;",
-        ],
-        answer: 2,
-        explanation:
-          "An int stores whole numbers only. The correct syntax is 'int x = 10;'. The other options either use a double literal, a String, or invalid syntax.",
-      },
-      {
-        topic: "Primitive Types",
-        difficulty: "Easy",
-        question: "What is the value of x after the following code executes?",
-        code: "int x = 7;\nx = x + 3 * 2;",
-        choices: ["13", "17", "20", "22"],
-        answer: 0,
-        explanation:
-          "Multiplication happens before addition. 3 * 2 = 6, then x = 7 + 6 = 13.",
-      },
-      {
-        topic: "Primitive Types",
-        difficulty: "Medium",
-        question: "Which expression correctly performs integer division in Java?",
-        code: "",
-        choices: [
-          "7 / 2.0",
-          "7.0 / 2",
-          "7 / 2",
-          "(double) (7 / 2)",
-        ],
-        answer: 2,
-        explanation:
-          "Integer division occurs when both operands are ints. 7 / 2 evaluates to 3. The others involve doubles or cast after the division.",
-      },
-      {
-        topic: "Primitive Types",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "int a = 5;\nint b = 2;\nSystem.out.println(a / b);",
-        choices: ["2.5", "2", "3", "Compilation error"],
-        answer: 1,
-        explanation:
-          "Both a and b are ints, so integer division is used. 5 / 2 = 2, truncating the decimal.",
-      },
-      {
-        topic: "Primitive Types",
-        difficulty: "Hard",
-        question: "Which of the following best describes the range of the int type in Java?",
-        code: "",
-        choices: [
-          "−2^15 to 2^15 − 1",
-          "−2^31 to 2^31 − 1",
-          "0 to 2^31 − 1",
-          "−2^63 to 2^63 − 1",
-        ],
-        answer: 1,
-        explanation:
-          "Java's int is a 32-bit signed integer, so its range is −2^31 to 2^31 − 1.",
-      },
-
-      // Using Objects
-      {
-        topic: "Using Objects",
-        difficulty: "Easy",
-        question: "Which of the following correctly constructs a String object?",
-        code: "",
-        choices: [
-          "String s = new String(\"hello\");",
-          "String s = String(\"hello\");",
-          "String s(\"hello\");",
-          "String s = String.new(\"hello\");",
-        ],
-        answer: 0,
-        explanation:
-          "The standard constructor call is 'new String(\"hello\")'. In practice, 'String s = \"hello\";' is also common, but not shown here.",
-      },
-      {
-        topic: "Using Objects",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "String s = \"AP CSA\";\nSystem.out.println(s.length());",
-        choices: ["5", "6", "7", "Compilation error"],
-        answer: 1,
-        explanation:
-          "\"AP CSA\" has 6 characters, including the space. The length method returns 6.",
-      },
-      {
-        topic: "Using Objects",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "String s1 = \"hello\";\nString s2 = new String(\"hello\");\nSystem.out.println(s1 == s2);",
-        choices: ["true", "false", "Sometimes true, sometimes false", "Compilation error"],
-        answer: 1,
-        explanation:
-          "The '==' operator compares object references, not contents. s1 and s2 refer to different objects, so the result is false.",
-      },
-      {
-        topic: "Using Objects",
-        difficulty: "Hard",
-        question: "Which method call correctly compares two String objects for content equality?",
-        code: "",
-        choices: [
-          "s1 == s2",
-          "s1.equals(s2)",
-          "equals(s1, s2)",
-          "s1.compareTo(s2) == 1",
-        ],
-        answer: 1,
-        explanation:
-          "The equals method checks for content equality between two String objects. '==' compares references.",
-      },
-      {
-        topic: "Using Objects",
-        difficulty: "Hard",
-        question: "What is printed by the following code?",
-        code: "String s = \"Java\";\nSystem.out.println(s.substring(1, 3));",
-        choices: ["Ja", "av", "ava", "Jav"],
-        answer: 1,
-        explanation:
-          "substring(start, end) includes the character at index start and excludes the character at index end. Indices 1 and 2 are 'a' and 'v', so the result is \"av\".",
-      },
-
-      // Boolean Expressions & if Statements
-      {
-        topic: "Boolean Expressions & if Statements",
-        difficulty: "Easy",
-        question: "Which of the following is a valid boolean expression in Java?",
-        code: "",
-        choices: [
-          "x = 5",
-          "x == 5",
-          "x := 5",
-          "x equals 5",
-        ],
-        answer: 1,
-        explanation:
-          "The equality operator in Java is '=='. 'x = 5' is an assignment, not a boolean expression.",
-      },
-      {
-        topic: "Boolean Expressions & if Statements",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "int x = 10;\nif (x > 5 && x < 15)\n{\n    System.out.println(\"A\");\n}\nelse\n{\n    System.out.println(\"B\");\n}",
-        choices: ["A", "B", "AB", "Nothing is printed"],
-        answer: 0,
-        explanation:
-          "x is 10, which is greater than 5 and less than 15, so the condition is true and \"A\" is printed.",
-      },
-      {
-        topic: "Boolean Expressions & if Statements",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "boolean a = true;\nboolean b = false;\nif (a || b)\n{\n    System.out.println(\"X\");\n}\nif (a && b)\n{\n    System.out.println(\"Y\");\n}",
-        choices: ["X", "Y", "XY", "Nothing"],
-        answer: 0,
-        explanation:
-          "a || b is true, so \"X\" prints. a && b is false, so \"Y\" does not print.",
-      },
-      {
-        topic: "Boolean Expressions & if Statements",
-        difficulty: "Hard",
-        question: "Which of the following best describes short-circuit evaluation?",
-        code: "",
-        choices: [
-          "Both sides of && and || are always evaluated.",
-          "Only the left side of && and || is evaluated.",
-          "The right side of && or || may not be evaluated if the result is already determined by the left side.",
-          "It applies only to arithmetic operators.",
-        ],
-        answer: 2,
-        explanation:
-          "Short-circuit evaluation means that in && and ||, the right operand is evaluated only if necessary.",
-      },
-      {
-        topic: "Boolean Expressions & if Statements",
-        difficulty: "Hard",
-        question: "What is printed by the following code?",
-        code: "int x = 3;\nint y = 7;\nif (x > 2)\n    if (y < 5)\n        System.out.println(\"A\");\n    else\n        System.out.println(\"B\");",
-        choices: ["A", "B", "AB", "Nothing"],
-        answer: 1,
-        explanation:
-          "The else is paired with the closest unmatched if. x > 2 is true, y < 5 is false, so the inner if fails and the else prints \"B\".",
-      },
-
-      // Iteration (Loops)
-      {
-        topic: "Iteration (Loops)",
-        difficulty: "Easy",
-        question: "How many times does the following loop execute?",
-        code: "for (int i = 0; i < 5; i++)\n{\n    System.out.println(i);\n}",
-        choices: ["4", "5", "6", "Infinite"],
-        answer: 1,
-        explanation:
-          "i takes values 0, 1, 2, 3, 4. That is 5 iterations.",
-      },
-      {
-        topic: "Iteration (Loops)",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "int sum = 0;\nfor (int i = 1; i <= 4; i++)\n{\n    sum += i;\n}\nSystem.out.println(sum);",
-        choices: ["4", "6", "10", "16"],
-        answer: 2,
-        explanation:
-          "sum = 1 + 2 + 3 + 4 = 10.",
-      },
-      {
-        topic: "Iteration (Loops)",
-        difficulty: "Medium",
-        question: "What is printed by the following while loop?",
-        code: "int x = 1;\nwhile (x < 10)\n{\n    x *= 2;\n}\nSystem.out.println(x);",
-        choices: ["8", "10", "12", "16"],
-        answer: 3,
-        explanation:
-          "x values: 1, 2, 4, 8, 16. Loop stops when x is 16 (since 16 < 10 is false).",
-      },
-      {
-        topic: "Iteration (Loops)",
-        difficulty: "Hard",
-        question: "Which loop header correctly iterates over all elements of an array arr of length n?",
-        code: "",
-        choices: [
-          "for (int i = 0; i <= n; i++)",
-          "for (int i = 1; i < n; i++)",
-          "for (int i = 0; i < n; i++)",
-          "for (int i = 1; i <= n; i++)",
-        ],
-        answer: 2,
-        explanation:
-          "Array indices go from 0 to n - 1, so the correct loop is i = 0; i < n; i++.",
-      },
-      {
-        topic: "Iteration (Loops)",
-        difficulty: "Hard",
-        question: "What is printed by the following nested loop?",
-        code: "int count = 0;\nfor (int i = 0; i < 3; i++)\n{\n    for (int j = 0; j < 2; j++)\n    {\n        count++;\n    }\n}\nSystem.out.println(count);",
-        choices: ["2", "3", "5", "6"],
-        answer: 3,
-        explanation:
-          "The inner loop runs 2 times for each of 3 iterations of the outer loop: 3 * 2 = 6.",
-      },
-
-      // Writing Classes
-      {
-        topic: "Writing Classes",
-        difficulty: "Easy",
-        question: "Which of the following is a valid instance variable declaration inside a class?",
-        code: "",
-        choices: [
-          "public void int count;",
-          "private int count;",
-          "int count();",
-          "static int();",
-        ],
-        answer: 1,
-        explanation:
-          "Instance variables are declared with a type and name, e.g., 'private int count;'.",
-      },
-      {
-        topic: "Writing Classes",
-        difficulty: "Medium",
-        question: "Which of the following is a correct constructor for a class named Counter?",
-        code: "",
-        choices: [
-          "public void Counter(int start) { value = start; }",
-          "public Counter(int start) { value = start; }",
-          "void Counter(int start) { value = start; }",
-          "Counter(int start) { return; }",
-        ],
-        answer: 1,
-        explanation:
-          "Constructors have no return type and must have the same name as the class. 'public Counter(int start)' is correct.",
-      },
-      {
-        topic: "Writing Classes",
-        difficulty: "Medium",
-        question: "What is the purpose of the 'this' keyword in a constructor?",
-        code: "",
-        choices: [
-          "It refers to the superclass.",
-          "It refers to the current object.",
-          "It refers to a static variable.",
-          "It refers to the main method.",
-        ],
-        answer: 1,
-        explanation:
-          "'this' refers to the current object, often used to distinguish instance variables from parameters.",
-      },
-      {
-        topic: "Writing Classes",
-        difficulty: "Hard",
-        question: "Which of the following best describes encapsulation?",
-        code: "",
-        choices: [
-          "Using loops to hide implementation details.",
-          "Bundling data and methods and restricting direct access to some components.",
-          "Writing multiple classes in one file.",
-          "Using inheritance to share code.",
-        ],
-        answer: 1,
-        explanation:
-          "Encapsulation means bundling data and methods together and controlling access, typically with private fields and public methods.",
-      },
-      {
-        topic: "Writing Classes",
-        difficulty: "Hard",
-        question: "Which of the following is the best reason to make instance variables private?",
-        code: "",
-        choices: [
-          "To make the code run faster.",
-          "To prevent the class from being instantiated.",
-          "To control how the variables are accessed and modified.",
-          "To allow direct access from other classes.",
-        ],
-        answer: 2,
-        explanation:
-          "Private instance variables enforce encapsulation, allowing the class to control access through methods.",
-      },
-
-      // Arrays
-      {
-        topic: "Arrays",
-        difficulty: "Easy",
-        question: "Which of the following correctly declares and initializes an array of 5 ints?",
-        code: "",
-        choices: [
-          "int[5] arr = new int[];",
-          "int[] arr = new int[5];",
-          "int arr = new int[5];",
-          "int[] arr = int[5];",
-        ],
-        answer: 1,
-        explanation:
-          "The correct syntax is 'int[] arr = new int[5];'.",
-      },
-      {
-        topic: "Arrays",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "int[] arr = {2, 4, 6, 8};\nSystem.out.println(arr[2]);",
-        choices: ["2", "4", "6", "8"],
-        answer: 2,
-        explanation:
-          "Array indices start at 0. arr[2] is the third element, which is 6.",
-      },
-      {
-        topic: "Arrays",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "int[] arr = {1, 2, 3, 4};\nint sum = 0;\nfor (int i = 0; i < arr.length; i++)\n{\n    sum += arr[i];\n}\nSystem.out.println(sum);",
-        choices: ["4", "6", "8", "10"],
-        answer: 3,
-        explanation:
-          "sum = 1 + 2 + 3 + 4 = 10.",
-      },
-      {
-        topic: "Arrays",
-        difficulty: "Hard",
-        question: "Which of the following will cause an ArrayIndexOutOfBoundsException?",
-        code: "int[] arr = new int[10];",
-        choices: [
-          "arr[0] = 5;",
-          "arr[9] = 5;",
-          "arr[10] = 5;",
-          "arr[arr.length - 1] = 5;",
-        ],
-        answer: 2,
-        explanation:
-          "Valid indices are 0 through 9. Index 10 is out of bounds.",
-      },
-      {
-        topic: "Arrays",
-        difficulty: "Hard",
-        question: "What is printed by the following code?",
-        code: "int[] arr = {3, 1, 4, 1, 5};\nint count = 0;\nfor (int x : arr)\n{\n    if (x == 1)\n    {\n        count++;\n    }\n}\nSystem.out.println(count);",
-        choices: ["0", "1", "2", "3"],
-        answer: 2,
-        explanation:
-          "There are two occurrences of 1 in the array, so count is 2.",
-      },
-
-      // ArrayList
-      {
-        topic: "ArrayList",
-        difficulty: "Easy",
-        question: "Which of the following correctly declares an ArrayList of Strings?",
-        code: "",
-        choices: [
-          "ArrayList<String> list = new ArrayList<String>();",
-          "ArrayList list = new ArrayList<String>();",
-          "ArrayList<String> list = new ArrayList<>;",
-          "ArrayList<String> list = new ArrayList();",
-        ],
-        answer: 0,
-        explanation:
-          "The fully correct generic declaration is 'ArrayList<String> list = new ArrayList<String>();'.",
-      },
-      {
-        topic: "ArrayList",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "ArrayList<Integer> list = new ArrayList<Integer>();\nlist.add(3);\nlist.add(5);\nlist.add(7);\nSystem.out.println(list.get(1));",
-        choices: ["3", "5", "7", "1"],
-        answer: 1,
-        explanation:
-          "ArrayList indices start at 0. list.get(1) returns the second element, 5.",
-      },
-      {
-        topic: "ArrayList",
-        difficulty: "Medium",
-        question: "What is the size of list after the following code executes?",
-        code: "ArrayList<String> list = new ArrayList<String>();\nlist.add(\"A\");\nlist.add(\"B\");\nlist.add(1, \"C\");",
-        choices: ["2", "3", "4", "It depends on the implementation"],
-        answer: 1,
-        explanation:
-          "add(1, \"C\") inserts at index 1, shifting elements to the right. There are now 3 elements.",
-      },
-      {
-        topic: "ArrayList",
-        difficulty: "Hard",
-        question: "Which of the following removes all occurrences of the String \"X\" from an ArrayList<String> list?",
-        code: "",
-        choices: [
-          "for (int i = 0; i < list.size(); i++)\n{\n    if (list.get(i) == \"X\")\n    {\n        list.remove(i);\n    }\n}",
-          "for (int i = 0; i < list.size(); i++)\n{\n    if (list.get(i).equals(\"X\"))\n    {\n        list.remove(i);\n        i--;\n    }\n}",
-          "for (String s : list)\n{\n    if (s.equals(\"X\"))\n    {\n        list.remove(s);\n    }\n}",
-          "list.removeAll(\"X\");",
-        ],
-        answer: 1,
-        explanation:
-          "When removing while iterating by index, you must adjust the index (i--) after removal to avoid skipping elements. Using equals compares contents.",
-      },
-      {
-        topic: "ArrayList",
-        difficulty: "Hard",
-        question: "What is printed by the following code?",
-        code: "ArrayList<Integer> list = new ArrayList<Integer>();\nlist.add(1);\nlist.add(2);\nlist.add(3);\nlist.remove(1);\nSystem.out.println(list);",
-        choices: [
-          "[1, 2, 3]",
-          "[1, 3]",
-          "[2, 3]",
-          "[1, 2]",
-        ],
-        answer: 1,
-        explanation:
-          "remove(1) removes the element at index 1 (the second element), so the list becomes [1, 3].",
-      },
-
-      // 2D Arrays
-      {
-        topic: "2D Arrays",
-        difficulty: "Easy",
-        question: "Which of the following correctly declares a 2D array of ints with 3 rows and 4 columns?",
-        code: "",
-        choices: [
-          "int[][] arr = new int[3][4];",
-          "int[3][4] arr = new int[][];",
-          "int arr = new int[3,4];",
-          "int[][] arr = new int[4][3];",
-        ],
-        answer: 0,
-        explanation:
-          "The correct syntax is 'int[][] arr = new int[3][4];'.",
-      },
-      {
-        topic: "2D Arrays",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "int[][] grid = {\n    {1, 2, 3},\n    {4, 5, 6}\n};\nSystem.out.println(grid[1][0]);",
-        choices: ["1", "2", "3", "4"],
-        answer: 3,
-        explanation:
-          "grid[1] is the second row {4, 5, 6}. grid[1][0] is 4.",
-      },
-      {
-        topic: "2D Arrays",
-        difficulty: "Medium",
-        question: "Which nested loop correctly visits every element in a 2D array int[][] grid?",
-        code: "",
-        choices: [
-          "for (int r = 0; r < grid.length; r++)\n{\n    for (int c = 0; c < grid.length; c++)\n    {\n        // use grid[r][c]\n    }\n}",
-          "for (int r = 0; r < grid.length; r++)\n{\n    for (int c = 0; c < grid[0].length; c++)\n    {\n        // use grid[r][c]\n    }\n}",
-          "for (int c = 0; c < grid.length; c++)\n{\n    for (int r = 0; r < grid[0].length; r++)\n    {\n        // use grid[r][c]\n    }\n}",
-          "for (int r = 1; r <= grid.length; r++)\n{\n    for (int c = 1; c <= grid[0].length; c++)\n    {\n        // use grid[r][c]\n    }\n}",
-        ],
-        answer: 1,
-        explanation:
-          "grid.length is the number of rows; grid[0].length is the number of columns. Using both correctly visits all elements.",
-      },
-      {
-        topic: "2D Arrays",
-        difficulty: "Hard",
-        question: "What is printed by the following code?",
-        code: "int[][] grid = {\n    {1, 2},\n    {3, 4},\n    {5, 6}\n};\nint sum = 0;\nfor (int r = 0; r < grid.length; r++)\n{\n    for (int c = 0; c < grid[0].length; c++)\n    {\n        sum += grid[r][c];\n    }\n}\nSystem.out.println(sum);",
-        choices: ["6", "12", "15", "21"],
-        answer: 3,
-        explanation:
-          "Sum of all elements: 1 + 2 + 3 + 4 + 5 + 6 = 21.",
-      },
-      {
-        topic: "2D Arrays",
-        difficulty: "Hard",
-        question: "Which of the following accesses the last element in the last row of a 2D array int[][] grid?",
-        code: "",
-        choices: [
-          "grid[grid.length][grid[0].length]",
-          "grid[grid.length - 1][grid[0].length - 1]",
-          "grid[0][0]",
-          "grid[1][1]",
-        ],
-        answer: 1,
-        explanation:
-          "The last row index is grid.length - 1, and the last column index is grid[0].length - 1.",
-      },
-
-      // Inheritance
-      {
-        topic: "Inheritance",
-        difficulty: "Easy",
-        question: "Which keyword is used in Java to indicate that a class inherits from another class?",
-        code: "",
-        choices: ["implements", "extends", "inherits", "super"],
-        answer: 1,
-        explanation:
-          "The 'extends' keyword is used to indicate inheritance from a superclass.",
-      },
-      {
-        topic: "Inheritance",
-        difficulty: "Medium",
-        question: "Given 'class Dog extends Animal', which statement is true?",
-        code: "",
-        choices: [
-          "Dog is the superclass and Animal is the subclass.",
-          "Dog and Animal are unrelated.",
-          "Dog is the subclass and Animal is the superclass.",
-          "Dog implements Animal.",
-        ],
-        answer: 2,
-        explanation:
-          "The class after 'extends' is the superclass. Dog extends Animal, so Dog is the subclass.",
-      },
-      {
-        topic: "Inheritance",
-        difficulty: "Medium",
-        question: "What is the purpose of the super keyword in a subclass constructor?",
-        code: "",
-        choices: [
-          "To call another method in the same class.",
-          "To call the superclass constructor.",
-          "To create a new object of the superclass.",
-          "To override a method.",
-        ],
-        answer: 1,
-        explanation:
-          "super(...) is used to call a constructor in the superclass.",
-      },
-      {
-        topic: "Inheritance",
-        difficulty: "Hard",
-        question: "Which of the following correctly overrides a method in a subclass?",
-        code: "class Animal {\n    public void speak() {\n        System.out.println(\"...\");\n    }\n}\n\nclass Dog extends Animal {\n    // Which method correctly overrides speak?\n}",
-        choices: [
-          "public void speak() {\n    System.out.println(\"Woof\");\n}",
-          "public void speak(String sound) {\n    System.out.println(sound);\n}",
-          "public int speak() {\n    return 1;\n}",
-          "private void speak() {\n    System.out.println(\"Woof\");\n}",
-        ],
-        answer: 0,
-        explanation:
-          "To override, the method must have the same signature and at least as accessible visibility. 'public void speak()' matches the superclass method.",
-      },
-      {
-        topic: "Inheritance",
-        difficulty: "Hard",
-        question: "Which statement about polymorphism is true?",
-        code: "",
-        choices: [
-          "A superclass reference can refer to an object of a subclass.",
-          "A subclass reference can always refer to an object of any superclass.",
-          "Polymorphism only applies to primitive types.",
-          "Polymorphism prevents method overriding.",
-        ],
-        answer: 0,
-        explanation:
-          "Polymorphism allows a superclass reference to refer to a subclass object, enabling dynamic method dispatch.",
-      },
-
-      // Recursion
-      {
-        topic: "Recursion",
-        difficulty: "Easy",
-        question: "Which of the following is essential for a recursive method?",
-        code: "",
-        choices: [
-          "A loop inside the method.",
-          "A base case that stops the recursion.",
-          "At least two parameters.",
-          "A static variable.",
-        ],
-        answer: 1,
-        explanation:
-          "A recursive method must have a base case to stop the recursion and avoid infinite calls.",
-      },
-      {
-        topic: "Recursion",
-        difficulty: "Medium",
-        question: "What is printed by the following code?",
-        code: "public static void mystery(int n)\n{\n    if (n == 0)\n    {\n        System.out.print(\"*\");\n    }\n    else\n    {\n        System.out.print(n);\n        mystery(n - 1);\n    }\n}\n\nmystery(3);",
-        choices: ["3*", "321*", "3*21", "321"],
-        answer: 1,
-        explanation:
-          "mystery(3) prints 3, then calls mystery(2), which prints 2, then mystery(1) prints 1, then mystery(0) prints '*'. Result: 321*.",
-      },
-      {
-        topic: "Recursion",
-        difficulty: "Medium",
-        question: "What does the following method compute?",
-        code: "public static int sumTo(int n)\n{\n    if (n == 0)\n    {\n        return 0;\n    }\n    else\n    {\n        return n + sumTo(n - 1);\n    }\n}",
-        choices: [
-          "The product of integers from 1 to n",
-          "The sum of integers from 1 to n",
-          "The factorial of n",
-          "Always returns 0",
-        ],
-        answer: 1,
-        explanation:
-          "sumTo(n) returns n + sumTo(n - 1) until n is 0, so it computes 1 + 2 + ... + n.",
-      },
-      {
-        topic: "Recursion",
-        difficulty: "Hard",
-        question: "What is returned by the call mystery(4)?",
-        code: "public static int mystery(int n)\n{\n    if (n <= 1)\n    {\n        return 1;\n    }\n    else\n    {\n        return n * mystery(n - 1);\n    }\n}",
-        choices: ["1", "4", "16", "24"],
-        answer: 3,
-        explanation:
-          "This is the factorial function. mystery(4) = 4 * 3 * 2 * 1 = 24.",
-      },
-      {
-        topic: "Recursion",
-        difficulty: "Hard",
-        question: "Which of the following best describes why infinite recursion is a problem?",
-        code: "",
-        choices: [
-          "It makes the code run faster.",
-          "It causes a stack overflow error at runtime.",
-          "It is required for all recursive methods.",
-          "It only affects loops, not recursion.",
-        ],
-        answer: 1,
-        explanation:
-          "Infinite recursion keeps adding method calls to the call stack until memory is exhausted, causing a stack overflow.",
-      },
+        {
+            topic: "Loops",
+            question: "What is printed?",
+            code: "int sum = 0;\nfor (int i = 1; i <= 4; i++) {\n    sum += i;\n}\nSystem.out.println(sum);",
+            choices: ["4", "6", "10", "16"],
+            answer: 2
+        },
+        {
+            topic: "Boolean",
+            question: "What is printed?",
+            code: "boolean a = true;\nboolean b = false;\nSystem.out.println(a && !b || !a && b);",
+            choices: ["true", "false", "0", "1"],
+            answer: 0
+        }
     ];
 
+    // ----------------------------------------------------
+    // DOM ELEMENTS
+    // ----------------------------------------------------
     const topicSelect = document.getElementById("topicSelect");
-    const randomTopicBtn = document.getElementById("randomTopicBtn");
-    const newQuestionBtn = document.getElementById("newQuestionBtn");
-    const nextQuestionBtn = document.getElementById("nextQuestionBtn");
-    const showExplanationBtn = document.getElementById("showExplanationBtn");
-
-    const questionTopicLabel = document.getElementById("questionTopicLabel");
     const questionText = document.getElementById("questionText");
     const codeBlock = document.getElementById("codeBlock");
-    const optionsContainer = document.getElementById("optionsContainer");
-    const feedbackEl = document.getElementById("feedback");
-    const explanationEl = document.getElementById("explanation");
-    const questionCounter = document.getElementById("questionCounter");
+    const choicesDiv = document.getElementById("choices");
+    const statusDiv = document.getElementById("status");
+    const questionMeta = document.getElementById("questionMeta");
+    const newQuestionBtn = document.getElementById("newQuestionBtn");
+    const modeBtn = document.getElementById("modeBtn");
 
-    const statAnswered = document.getElementById("statAnswered");
+    const statTotal = document.getElementById("statTotal");
+    const statCorrect = document.getElementById("statCorrect");
     const statAccuracy = document.getElementById("statAccuracy");
-    const statStreak = document.getElementById("statStreak");
-    const statBestStreak = document.getElementById("statBestStreak");
-    const progressFill = document.getElementById("progressFill");
-    const topicSummary = document.getElementById("topicSummary");
-    const topicSummaryTag = document.getElementById("topicSummaryTag");
-    const difficultyLabel = document.getElementById("difficultyLabel");
 
     let currentQuestion = null;
     let hasAnsweredCurrent = false;
     let totalAnswered = 0;
     let totalCorrect = 0;
-    let currentStreak = 0;
-    let bestStreak = 0;
 
-    function getFilteredQuestions() {
-      const topic = topicSelect.value;
-      if (topic === "all") {
-        return questions;
-      }
-      return questions.filter((q) => q.topic === topic);
-    }
+    // ----------------------------------------------------
+    // NEW QUESTION LOGIC
+    // ----------------------------------------------------
+    function newQuestion() {
+        const topic = topicSelect.value;
 
-    function pickRandomQuestion() {
-      const pool = getFilteredQuestions();
-      if (pool.length === 0) {
-        return null;
-      }
-      const index = Math.floor(Math.random() * pool.length);
-      return pool[index];
-    }
+        const filtered = (topic === "All")
+            ? questions
+            : questions.filter(q => q.topic === topic);
 
-    function updateStatsDisplay() {
-      statAnswered.textContent = totalAnswered;
-      const accuracy = totalAnswered === 0 ? 0 : Math.round((totalCorrect / totalAnswered) * 100);
-      statAccuracy.textContent = accuracy + "%";
-      statStreak.textContent = currentStreak;
-      statBestStreak.textContent = bestStreak;
-      progressFill.style.width = Math.min(accuracy, 100) + "%";
-      questionCounter.textContent = totalAnswered + " answered · " + totalCorrect + " correct";
-    }
-
-    function updateTopicSummary() {
-      const topic = topicSelect.value;
-      if (topic === "all") {
-        topicSummary.innerHTML =
-          'Topic focus: <span>All topics</span>. Mix questions to simulate the exam, or drill a single area.';
-        topicSummaryTag.textContent = "All topics";
-      } else {
-        topicSummary.innerHTML =
-          'Topic focus: <span>' +
-          topic +
-          "</span>. You are currently drilling this specific area.";
-        topicSummaryTag.textContent = topic;
-      }
-    }
-
-    function renderQuestion(q) {
-      currentQuestion = q;
-      hasAnsweredCurrent = false;
-
-      questionTopicLabel.textContent = q.topic;
-      questionText.textContent = q.question;
-
-      if (q.code && q.code.trim().length > 0) {
-        codeBlock.style.display = "block";
-        codeBlock.textContent = q.code;
-      } else {
-        codeBlock.style.display = "none";
-      }
-
-      optionsContainer.innerHTML = "";
-      const labels = ["A", "B", "C", "D"];
-      q.choices.forEach((choice, index) => {
-        const optionDiv = document.createElement("div");
-        optionDiv.className = "option";
-        optionDiv.dataset.index = index;
-
-        const labelSpan = document.createElement("div");
-        labelSpan.className = "option-label";
-        labelSpan.textContent = labels[index];
-
-        const textSpan = document.createElement("div");
-        textSpan.className = "option-text";
-        textSpan.textContent = choice;
-
-        optionDiv.appendChild(labelSpan);
-        optionDiv.appendChild(textSpan);
-
-        optionDiv.addEventListener("click", () => handleOptionClick(index));
-
-        optionsContainer.appendChild(optionDiv);
-      });
-
-      feedbackEl.style.display = "none";
-      explanationEl.style.display = "none";
-      explanationEl.textContent = q.explanation || "";
-
-      showExplanationBtn.disabled = true;
-      nextQuestionBtn.disabled = true;
-
-      difficultyLabel.textContent = q.difficulty || "Mixed";
-    }
-
-    function handleOptionClick(selectedIndex) {
-      if (!currentQuestion || hasAnsweredCurrent) return;
-      hasAnsweredCurrent = true;
-
-      const correctIndex = currentQuestion.answer;
-      const optionDivs = optionsContainer.querySelectorAll(".option");
-
-      optionDivs.forEach((div) => {
-        const idx = parseInt(div.dataset.index, 10);
-        div.classList.add("disabled");
-        if (idx === correctIndex) {
-          div.classList.add("correct");
+        if (!filtered || filtered.length === 0) {
+            currentQuestion = null;
+            questionMeta.textContent = "";
+            questionText.textContent = "No questions found for this topic.";
+            codeBlock.textContent = "";
+            choicesDiv.innerHTML = "";
+            statusDiv.textContent = "Add questions to the 'questions' array in the script.";
+            return;
         }
-        if (idx === selectedIndex && idx !== correctIndex) {
-          div.classList.add("incorrect");
-        }
-      });
 
-      if (selectedIndex === correctIndex) {
-        feedbackEl.textContent = "Correct! Nice work.";
-        feedbackEl.className = "feedback correct";
-        totalCorrect++;
-        currentStreak++;
-        if (currentStreak > bestStreak) {
-          bestStreak = currentStreak;
-        }
-      } else {
-        feedbackEl.textContent = "Not quite. Review the explanation and try a similar question.";
-        feedbackEl.className = "feedback incorrect";
-        currentStreak = 0;
-      }
+        const q = filtered[Math.floor(Math.random() * filtered.length)];
+        currentQuestion = q;
+        hasAnsweredCurrent = false;
 
-      totalAnswered++;
-      feedbackEl.style.display = "block";
-      showExplanationBtn.disabled = false;
-      nextQuestionBtn.disabled = false;
+        questionMeta.textContent = q.topic ? ("Topic: " + q.topic) : "";
+        questionText.textContent = q.question || "";
+        codeBlock.textContent = q.code || "";
+        choicesDiv.innerHTML = "";
+        statusDiv.textContent = "Select an answer.";
 
-      updateStatsDisplay();
+        q.choices.forEach((choice, index) => {
+            const div = document.createElement("div");
+            div.className = "choice";
+            div.textContent = choice;
+
+            div.onclick = () => handleChoiceClick(div, index, q);
+
+            choicesDiv.appendChild(div);
+        });
     }
 
-    function loadNewQuestion() {
-      const q = pickRandomQuestion();
-      if (!q) {
-        questionText.textContent = "No questions available for this topic yet.";
-        codeBlock.style.display = "none";
-        optionsContainer.innerHTML = "";
-        feedbackEl.style.display = "none";
-        explanationEl.style.display = "none";
-        showExplanationBtn.disabled = true;
-        nextQuestionBtn.disabled = true;
-        return;
-      }
-      renderQuestion(q);
+    function handleChoiceClick(choiceDiv, index, q) {
+        if (!currentQuestion || hasAnsweredCurrent) return;
+
+        hasAnsweredCurrent = true;
+        totalAnswered++;
+
+        const allChoices = document.querySelectorAll(".choice");
+        allChoices.forEach(ch => ch.classList.remove("correct", "incorrect"));
+
+        if (index === q.answer) {
+            choiceDiv.classList.add("correct");
+            statusDiv.textContent = "Correct.";
+            totalCorrect++;
+        } else {
+            choiceDiv.classList.add("incorrect");
+            statusDiv.textContent = "Incorrect.";
+        }
+
+        updateStats();
     }
 
-    topicSelect.addEventListener("change", () => {
-      updateTopicSummary();
-      loadNewQuestion();
-    });
+    function updateStats() {
+        statTotal.textContent = totalAnswered;
+        statCorrect.textContent = totalCorrect;
+        const acc = totalAnswered === 0 ? 0 : Math.round((totalCorrect / totalAnswered) * 100);
+        statAccuracy.textContent = acc + "%";
+    }
 
-    newQuestionBtn.addEventListener("click", () => {
-      loadNewQuestion();
-    });
+    newQuestionBtn.addEventListener("click", newQuestion);
 
-    nextQuestionBtn.addEventListener("click", () => {
-      loadNewQuestion();
-    });
+    // ----------------------------------------------------
+    // DARK / LIGHT MODE TOGGLE
+    // ----------------------------------------------------
+    modeBtn.onclick = () => {
+        document.body.classList.toggle("light");
+        modeBtn.textContent = document.body.classList.contains("light")
+            ? "Dark Mode"
+            : "Light Mode";
+    };
+</script>
 
-    showExplanationBtn.addEventListener("click", () => {
-      if (!currentQuestion) return;
-      explanationEl.style.display = "block";
-    });
-
-    randomTopicBtn.addEventListener("click", () => {
-      const topics = [
-        "Primitive Types",
-        "Using Objects",
-        "Boolean Expressions & if Statements",
-        "Iteration (Loops)",
-        "Writing Classes",
-        "Arrays",
-        "ArrayList",
-        "2D Arrays",
-        "Inheritance",
-        "Recursion",
-      ];
-      const randomIndex = Math.floor(Math.random() * topics.length);
-      topicSelect.value = topics[randomIndex];
-      updateTopicSummary();
-      loadNewQuestion();
-    });
-
-    updateStatsDisplay();
-    updateTopicSummary();
-  </script>
 </body>
 </html>
