@@ -28,7 +28,9 @@
         --choice-bg: #f3f4f6;
     }
 
-    * { box-sizing: border-box; }
+    * {
+        box-sizing: border-box;
+    }
 
     body {
         margin: 0;
@@ -51,10 +53,17 @@
         z-index: 20;
     }
 
+    .brand {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
     .brand-title {
         margin: 0;
         font-size: 26px;
         font-weight: 700;
+        letter-spacing: 0.03em;
     }
 
     .brand-subtitle {
@@ -67,6 +76,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+        align-items: center;
     }
 
     select, button {
@@ -80,11 +90,20 @@
         transition: 0.2s;
     }
 
+    select {
+        min-width: 170px;
+    }
+
     button {
         background: var(--accent);
         color: #111827;
         border: none;
         font-weight: 600;
+    }
+
+    button:hover, select:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
     }
 
     main {
@@ -93,10 +112,27 @@
         padding: 0 16px;
     }
 
+    .hero {
+        margin-bottom: 24px;
+    }
+
+    .hero-title {
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .hero-text {
+        font-size: 14px;
+        color: var(--muted);
+        max-width: 600px;
+    }
+
     #layout {
         display: grid;
         grid-template-columns: minmax(0, 2.5fr) minmax(0, 1fr);
         gap: 20px;
+        align-items: flex-start;
     }
 
     #questionCard {
@@ -127,6 +163,11 @@
         font-size: 14px;
         margin-bottom: 16px;
         white-space: pre;
+        border: 1px solid #02061780;
+    }
+
+    #choices {
+        margin-top: 6px;
     }
 
     .choice {
@@ -157,28 +198,50 @@
         border-color: #dc2626 !important;
     }
 
-    #explanationBox {
-        margin-top: 14px;
-        padding: 14px;
-        background: var(--choice-bg);
-        border-left: 4px solid var(--accent);
-        border-radius: 8px;
-        font-size: 14px;
-        display: none;
+    #status {
+        margin-top: 12px;
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 
     .panel {
         background: var(--card);
         border-radius: 16px;
-        padding: 16px;
+        padding: 16px 16px 18px;
         border: 1px solid var(--border);
+    }
+
+    .panel-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 8px;
     }
 
     .stat-row {
         display: flex;
         justify-content: space-between;
-        margin: 4px 0;
         font-size: 14px;
+        margin: 4px 0;
+    }
+
+    .stat-label {
+        color: var(--muted);
+    }
+
+    .stat-value {
+        font-weight: 600;
+    }
+
+    .hint {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.4;
     }
 
     footer {
@@ -187,15 +250,35 @@
         color: var(--muted);
         padding: 18px 0 26px;
     }
+
+    @media (max-width: 850px) {
+        #layout {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    @media (max-width: 650px) {
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        #controls {
+            width: 100%;
+        }
+        select, button {
+            flex: 1;
+        }
+    }
 </style>
 </head>
 
 <body>
 
 <header>
-    <div>
+    <div class="brand">
         <h1 class="brand-title">AP CS Arena</h1>
-        <p class="brand-subtitle">High‑rigor AP Computer Science A practice.</p>
+        <p class="brand-subtitle">High‑rigor AP Computer Science A practice in one place.</p>
     </div>
 
     <div id="controls">
@@ -218,123 +301,176 @@
 </header>
 
 <main>
-    <section id="layout">
+    <section class="hero">
+        <h2 class="hero-title">Targeted AP CSA multiple‑choice practice.</h2>
+        <p class="hero-text">
+            Choose a topic, generate a new question, and drill exam‑style logic, tracing, and debugging.
+            Dark/light mode, topic filtering, and live stats keep practice focused and efficient.
+        </p>
+    </section>
 
+    <section id="layout">
         <article id="questionCard">
             <div id="questionMeta"></div>
             <div id="questionText">Choose a topic and click “New Question”.</div>
             <pre id="codeBlock"></pre>
             <div id="choices"></div>
-            <div id="explanationBox"></div>
+            <div id="status"></div>
         </article>
 
-        <aside class="panel">
-            <h3 style="margin-top:0;">Session Stats</h3>
-            <div class="stat-row"><span>Answered</span><span id="statTotal">0</span></div>
-            <div class="stat-row"><span>Correct</span><span id="statCorrect">0</span></div>
-            <div class="stat-row"><span>Accuracy</span><span id="statAccuracy">0%</span></div>
-        </aside>
+        <aside class="sidebar">
+            <div class="panel">
+                <div class="panel-title">Session Stats</div>
+                <div class="stat-row">
+                    <span class="stat-label">Questions Answered</span>
+                    <span class="stat-value" id="statTotal">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Correct</span>
+                    <span class="stat-value" id="statCorrect">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Accuracy</span>
+                    <span class="stat-value" id="statAccuracy">0%</span>
+                </div>
+            </div>
 
+            <div class="panel">
+                <div class="panel-title">How to use this</div>
+                <p class="hint">
+                    1. Pick a topic from the dropdown.<br>
+                    2. Click <strong>New Question</strong> to load a random item from that topic.<br>
+                    3. Click an answer choice to check yourself.<br>
+                    4. Watch your stats update as you practice.
+                </p>
+            </div>
+        </aside>
     </section>
 </main>
 
 <footer>
-    AP CS Arena · Built for serious AP CSA mastery.
+    AP CS Arena · Built for serious AP Computer Science A practice.
 </footer>
 
 <script>
-    // SAMPLE QUESTIONS — replace with your full bank
+    // ----------------------------------------------------
+    // QUESTION BANK
+    // ----------------------------------------------------
+    // SAMPLE QUESTIONS so you can SEE everything working.
+    // Replace this entire array with your full bank later.
     const questions = [
         {
             topic: "Loops",
             question: "What is printed?",
-            code: "int sum = 0;\nfor (int i = 1; i <= 4; i++) sum += i;\nSystem.out.println(sum);",
+            code: "int sum = 0;\nfor (int i = 1; i <= 4; i++) {\n    sum += i;\n}\nSystem.out.println(sum);",
             choices: ["4", "6", "10", "16"],
-            answer: 2,
-            explanation: "The loop adds 1 + 2 + 3 + 4 = 10."
+            answer: 2
+        },
+        {
+            topic: "Boolean",
+            question: "What is printed?",
+            code: "boolean a = true;\nboolean b = false;\nSystem.out.println(a && !b || !a && b);",
+            choices: ["true", "false", "0", "1"],
+            answer: 0
         }
     ];
 
+    // ----------------------------------------------------
+    // DOM ELEMENTS
+    // ----------------------------------------------------
     const topicSelect = document.getElementById("topicSelect");
     const questionText = document.getElementById("questionText");
     const codeBlock = document.getElementById("codeBlock");
     const choicesDiv = document.getElementById("choices");
-    const explanationBox = document.getElementById("explanationBox");
+    const statusDiv = document.getElementById("status");
+    const questionMeta = document.getElementById("questionMeta");
+    const newQuestionBtn = document.getElementById("newQuestionBtn");
+    const modeBtn = document.getElementById("modeBtn");
 
     const statTotal = document.getElementById("statTotal");
     const statCorrect = document.getElementById("statCorrect");
     const statAccuracy = document.getElementById("statAccuracy");
 
     let currentQuestion = null;
-    let hasAnswered = false;
+    let hasAnsweredCurrent = false;
     let totalAnswered = 0;
     let totalCorrect = 0;
 
+    // ----------------------------------------------------
+    // NEW QUESTION LOGIC
+    // ----------------------------------------------------
     function newQuestion() {
-        explanationBox.style.display = "none";
-        explanationBox.textContent = "";
-
         const topic = topicSelect.value;
-        const filtered = topic === "All" ? questions : questions.filter(q => q.topic === topic);
 
-        if (!filtered.length) {
+        const filtered = (topic === "All")
+            ? questions
+            : questions.filter(q => q.topic === topic);
+
+        if (!filtered || filtered.length === 0) {
+            currentQuestion = null;
+            questionMeta.textContent = "";
             questionText.textContent = "No questions found for this topic.";
             codeBlock.textContent = "";
             choicesDiv.innerHTML = "";
+            statusDiv.textContent = "Add questions to the 'questions' array in the script.";
             return;
         }
 
         const q = filtered[Math.floor(Math.random() * filtered.length)];
         currentQuestion = q;
-        hasAnswered = false;
+        hasAnsweredCurrent = false;
 
-        document.getElementById("questionMeta").textContent = "Topic: " + q.topic;
-        questionText.textContent = q.question;
+        questionMeta.textContent = q.topic ? ("Topic: " + q.topic) : "";
+        questionText.textContent = q.question || "";
         codeBlock.textContent = q.code || "";
         choicesDiv.innerHTML = "";
+        statusDiv.textContent = "Select an answer.";
 
         q.choices.forEach((choice, index) => {
             const div = document.createElement("div");
             div.className = "choice";
             div.textContent = choice;
 
-            div.onclick = () => handleAnswer(div, index, q);
+            div.onclick = () => handleChoiceClick(div, index, q);
 
             choicesDiv.appendChild(div);
         });
     }
 
-    function handleAnswer(choiceDiv, index, q) {
-        if (hasAnswered) return;
-        hasAnswered = true;
+    function handleChoiceClick(choiceDiv, index, q) {
+        if (!currentQuestion || hasAnsweredCurrent) return;
 
+        hasAnsweredCurrent = true;
         totalAnswered++;
 
         const allChoices = document.querySelectorAll(".choice");
-        allChoices.forEach(c => c.classList.remove("correct", "incorrect"));
+        allChoices.forEach(ch => ch.classList.remove("correct", "incorrect"));
 
         if (index === q.answer) {
             choiceDiv.classList.add("correct");
+            statusDiv.textContent = "Correct.";
             totalCorrect++;
-            explanationBox.textContent = "Correct! " + q.explanation;
         } else {
             choiceDiv.classList.add("incorrect");
-            explanationBox.textContent = "Incorrect. " + q.explanation;
+            statusDiv.textContent = "Incorrect.";
         }
 
-        explanationBox.style.display = "block";
         updateStats();
     }
 
     function updateStats() {
         statTotal.textContent = totalAnswered;
         statCorrect.textContent = totalCorrect;
-        statAccuracy.textContent = Math.round((totalCorrect / totalAnswered) * 100) + "%";
+        const acc = totalAnswered === 0 ? 0 : Math.round((totalCorrect / totalAnswered) * 100);
+        statAccuracy.textContent = acc + "%";
     }
 
-    document.getElementById("newQuestionBtn").onclick = newQuestion;
+    newQuestionBtn.addEventListener("click", newQuestion);
 
-    document.getElementById("modeBtn").onclick = () => {
+    // ----------------------------------------------------
+    // DARK / LIGHT MODE TOGGLE
+    // ----------------------------------------------------
+    modeBtn.onclick = () => {
         document.body.classList.toggle("light");
         modeBtn.textContent = document.body.classList.contains("light")
             ? "Dark Mode"
